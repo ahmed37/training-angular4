@@ -4,14 +4,14 @@
     </div>
     <div class="panel-body">
         <div class="row">
-            <div class="col-md-2">Filter by:</div>
+            <div class="col-md-2">Filter by: </div>
             <div class="col-md-4">
-                <input type="text"/>
+                <input type="text" [(ngModel)]='listFilter'/>
             </div>
         </div>
         <div class="row">
             <div class="col-md-6">
-                <h3>Filtred by : </h3>
+                <h3>Filtred by : {{ listFilter}}</h3>
             </div>
 
         </div>
@@ -34,7 +34,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let product of products">
+                <tr *ngFor="let product of filtredProducts">
                     <td>
                         <img *ngIf='showImage'
                             [src]='product.imageUrl'
@@ -43,10 +43,13 @@
                             [style.maring.px]='imageMargin'/>
                     </td>
                     <td>{{ product.productName }}</td>
-                    <td>{{ product.productCode }}</td>
+                    <td>{{ product.productCode | lowercase | convertToSpaces:'-'}}</td>
                     <td>{{ product.releaseDate }}</td>
-                    <td>{{ product.price }}</td>
-                    <td>{{ product.startingRate }}</td>
+                    <td>{{ product.price | currency :'USD':true:'1.2-2'}}</td>
+                    <td>
+                        <pm-star [rating]='product.starRating'
+                        (ratingClicked)='onRatingClicked($event)'></pm-star>
+                    </td>
                 </tr>
             </tbody>
         </table>
